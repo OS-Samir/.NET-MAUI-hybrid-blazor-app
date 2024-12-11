@@ -1,0 +1,157 @@
+
+@page "/todo"
+@using System.Text.Json
+
+<h3>To-Do List</h3>
+
+<div>
+    <label for="new-task">New Task:</label>
+    <input id="new-task" @bind="newTask" placeholder="Enter task name..." />
+    <button @onclick="AddTask">Add</button>
+</div>
+
+@if (todoList.Count > 0)
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Task</th>
+                <th>Status</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var task in todoList)
+            {
+                <tr>
+                    <td>@task.Id</td>
+                    <td>@task.TaskName</td>
+                    <td>@(task.IsCompleted ? "Completed" : "Pending")</td>
+                    <td>
+                        <button @onclick="() => ToggleTaskStatus(task)">Toggle Status</button>
+                        <button @onclick="() => RemoveTask(task.Id)">Remove</button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <p>No tasks available. Add a task to get started!</p>
+}
+
+<div>
+    <button @onclick="SaveTasks">Save Tasks</button>
+    <button @onclick="LoadTasks">Load Tasks</button>
+</div>
+
+<p>@message</p>
+
+@code {
+    private string newTask = string.Empty;
+    private List<TodoItem> todoList = new();
+    private string message = string.Empty;
+
+    // Adds a new task to the list
+    private void AddTask()
+    {
+        if (!string.IsNullOrWhiteSpace(newTask))
+        {
+            todoList.Add(new TodoItem { Id = Guid.NewGuid(), TaskName = newTask, IsCompleted = false });
+            newTask = string.Empty;
+            message = "Task added successfully!";
+        }
+    }
+
+    // Removes a task from the list by GUID
+    private void RemoveTask(Guid taskId)
+    {
+        var taskToRemove = todoList.FirstOrDefault(t => t.Id == taskId);
+        if (taskToRemove != null)
+        {
+            todoList.Remove(taskToRemove);
+            message = "Task removed successfully!";
+        }
+        else
+        {
+            message = "Task not found.";
+        }
+    }
+
+    // Toggles the completion status of a task
+    private void ToggleTaskStatus(TodoItem task)
+    {
+        task.IsCompleted = !task.IsCompleted;
+        message = $"Task '{task.TaskName}' status toggled!";
+    }
+
+    // Saves tasks to JSON format on the desktop
+     private void SaveTasks()
+    {
+        try
+        {
+          // Get the writable Documents directory for the app
+        string projectDir =  Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), "MyApp");
+        string dataDirectory = Path.Combine(projectDir, "Data");
+
+        // Ensure the "Data" folder exists
+        if (!Directory.Exists(dataDirectory))
+        {
+            Directory.CreateDirectory(dataDirectory);
+        }
+
+        // Construct the path for the tasks.json file
+        string filePath = Path.Combine(dataDirectory, "tasks.json");
+
+        // Serialize and write tasks to the JSON file
+        var json = JsonSerializer.Serialize(todoList);
+        System.IO.File.WriteAllText(filePath, json);
+
+        message = $"Tasks saved successfully to: {filePath}";
+        }
+        catch (Exception ex)
+        {
+            message = $"Error saving tasks: {ex.Message}";
+        }
+    } 
+
+
+
+
+
+    // Loads tasks from a JSON file on the desktop
+    private void LoadTasks()
+    {
+        try
+        {
+             string projectDir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), "MyApp" );
+            string dataDirectory = Path.Combine(projectDir, "Data");
+            string filePath = Path.Combine(dataDirectory, "tasks.json");
+
+            if (System.IO.File.Exists(filePath))
+        {
+            var json = System.IO.File.ReadAllText(filePath);
+            todoList = JsonSerializer.Deserialize<List<TodoItem>>(json) ?? new();
+            message = $"Tasks loaded successfully from: {filePath}";
+        }
+            else
+            {
+                message = "No tasks file found on the Desktop.";
+            }
+        }
+        catch (Exception ex)
+        {
+            message = $"Error loading tasks: {ex.Message}";
+        }
+    }
+
+    // To-Do Item model
+    private class TodoItem
+    {
+        public Guid Id { get; set; } // Unique identifier for each task using GUID
+        public string TaskName { get; set; } = string.Empty;
+        public bool IsCompleted { get; set; }
+    }
+}

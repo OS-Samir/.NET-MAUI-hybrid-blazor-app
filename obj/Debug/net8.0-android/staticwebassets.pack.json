@@ -1,0 +1,49 @@
+{
+  "Files": [
+    {
+      "Id": "/Users/salimalfa398/Desktop/MyApp/obj/Debug/net8.0-android/scopedcss/bundle/MyApp.styles.css",
+      "PackagePath": "staticwebassets/MyApp.styles.css"
+    },
+    {
+      "Id": "/Users/salimalfa398/Desktop/MyApp/wwwroot/css/app.css",
+      "PackagePath": "staticwebassets/css/app.css"
+    },
+    {
+      "Id": "/Users/salimalfa398/Desktop/MyApp/wwwroot/css/bootstrap/bootstrap.min.css",
+      "PackagePath": "staticwebassets/css/bootstrap/bootstrap.min.css"
+    },
+    {
+      "Id": "/Users/salimalfa398/Desktop/MyApp/wwwroot/css/bootstrap/bootstrap.min.css.map",
+      "PackagePath": "staticwebassets/css/bootstrap/bootstrap.min.css.map"
+    },
+    {
+      "Id": "/Users/salimalfa398/Desktop/MyApp/wwwroot/favicon.png",
+      "PackagePath": "staticwebassets/favicon.png"
+    },
+    {
+      "Id": "/Users/salimalfa398/Desktop/MyApp/wwwroot/index.html",
+      "PackagePath": "staticwebassets/index.html"
+    },
+    {
+      "Id": "/Users/salimalfa398/Desktop/MyApp/wwwroot/user.json",
+      "PackagePath": "staticwebassets/user.json"
+    },
+    {
+      "Id": "obj/Debug/net8.0-android/staticwebassets/msbuild.MyApp.Microsoft.AspNetCore.StaticWebAssets.props",
+      "PackagePath": "build\\Microsoft.AspNetCore.StaticWebAssets.props"
+    },
+    {
+      "Id": "obj/Debug/net8.0-android/staticwebassets/msbuild.build.MyApp.props",
+      "PackagePath": "build\\MyApp.props"
+    },
+    {
+      "Id": "obj/Debug/net8.0-android/staticwebassets/msbuild.buildMultiTargeting.MyApp.props",
+      "PackagePath": "buildMultiTargeting\\MyApp.props"
+    },
+    {
+      "Id": "obj/Debug/net8.0-android/staticwebassets/msbuild.buildTransitive.MyApp.props",
+      "PackagePath": "buildTransitive\\MyApp.props"
+    }
+  ],
+  "ElementsToRemove": []
+}

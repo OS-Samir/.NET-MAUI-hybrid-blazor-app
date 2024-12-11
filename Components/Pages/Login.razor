@@ -1,0 +1,84 @@
+@page "/login"
+<div class="container">
+    <div class="row">
+        @* <div class="col-md-4"></div> *@
+        <div class="col-md-12">
+            <!-- Show login form only if user is not authenticated -->
+            @if (!isAuthenticated)
+            {
+                <!-- Display error message if login fails -->
+                @if (!string.IsNullOrEmpty(errorMessage))
+                {
+                    <div class="alert alert-danger">
+                        @errorMessage
+                    </div>
+                }
+                <h3>Login Page</h3>
+                <form @onsubmit="HandleLogin">
+                    <div class="container">
+                        <div class="mb-3">
+                            <label for="Username">Username:</label>
+                            <input type="text" id="Username" @bind="userModel.Username" />
+                        </div>
+                        <div class="mb-3">
+                            <label for="Password">Password:</label>
+                            <input type="password" id="Password" @bind="userModel.Password" />
+                        </div>
+                        <div class="mb-3">
+                            <button type="submit">Login</button>
+                        </div>
+                    </div>
+                </form>
+            }
+            else
+            {
+                <!-- Show success message if user is authenticated -->
+                <div class="alert alert-success">
+                    Login successful! Welcome, @userModel.Username.
+                </div>
+
+                <div class="mt-3">
+                    <button @onclick="Logout" class="btn btn-primary">Logout</button>
+                </div>
+              
+            }
+        </div>
+        @* <div class="col-md-4"></div> *@
+    </div>
+</div>
+
+@code {
+    public class User 
+    {
+        public string Username { get; set; } = string.Empty;
+        public string Password { get; set; } = string.Empty;
+    }
+    private User userModel = new User();
+    private bool isAuthenticated = false;
+    private string errorMessage = string.Empty;
+  
+
+    private  void HandleLogin()
+    {
+        if (userModel.Username == "admin" && userModel.Password == "password")
+        {
+            isAuthenticated = true;
+            Console.WriteLine("Login Sucessfull");
+
+
+        } else {
+            isAuthenticated = false;
+            errorMessage = "Invalid username or password.";
+            Console.WriteLine("Error in Login");
+        }
+    }
+
+    private void Logout()
+    {
+        isAuthenticated = false;
+        userModel = new User(); // Reset user info
+        Console.WriteLine("User logged out");
+    }
+}
+
+
